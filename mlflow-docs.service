@@ -1,0 +1,17 @@
+[Unit]
+Description: MLflow Static Documentation Server
+After=network.target
+
+[Service]
+# User and Group should be updated to match your Linux user
+User=ubuntu
+Group=ubuntu
+# This directory should contain the built HTML from your local machine
+WorkingDirectory=/home/ubuntu/mlflow-tutorial/_build/html
+# Simple Python static server to minimize CPU/RAM usage
+ExecStart=/usr/bin/python3 -m http.server 8080
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,14 +1,15 @@
 #!/bin/bash
 
-# Deployment script for MLflow Jupyter Book Server
-# Assuming a fresh Linux (Ubuntu/Debian) install
+# Deployment script for MLflow Tracking Server and Static Docs
+# Optimized for low-resource Linux servers (serving static HTML)
 
 set -e
 
 PROJECT_DIR=$(pwd)
-SERVICE_NAME="mlflow-server.service"
+SERVER_SERVICE="mlflow-server.service"
+DOCS_SERVICE="mlflow-docs.service"
 
-echo "🚀 Starting deployment of MLflow Server..."
+echo "🚀 Starting deployment..."
 
 # 1. Update system and install dependencies
 echo "📦 Installing system dependencies..."
@@ -19,37 +20,44 @@ sudo apt-get install -y curl git python3-pip
 if ! command -v uv &> /dev/null; then
     echo "✨ Installing uv..."
     curl -LsSf https://astral.sh/uv/install.sh | sh
-    # Add uv to PATH for the current script execution
     export PATH="$HOME/.local/bin:$PATH"
-    # Persist to bashrc for future sessions
     if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
         echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
     fi
 fi
 
-# 3. Setup project environment
+# 3. Setup project environment (for MLflow Tracking)
 echo "🛠️ Syncing project environment..."
 uv sync
 
-# 4. Update service file with correct uv path and user
+# 4. Configure Services dynamically
 UV_PATH=$(command -v uv)
 CURRENT_USER=$(whoami)
-echo "🔧 Configuring service for user $CURRENT_USER with uv at $UV_PATH..."
-sed -i "s|User=ubuntu|User=$CURRENT_USER|g" "$SERVICE_NAME"
-sed -i "s|Group=ubuntu|Group=$CURRENT_USER|g" "$SERVICE_NAME"
-sed -i "s|WorkingDirectory=/home/ubuntu/mlflow-tutorial|WorkingDirectory=$PROJECT_DIR|g" "$SERVICE_NAME"
-sed -i "s|ExecStart=/usr/local/bin/uv|ExecStart=$UV_PATH|g" "$SERVICE_NAME"
 
-# 5. Create Symlink for systemd service
-echo "🔗 Symlinking service file..."
-sudo ln -sf "$PROJECT_DIR/$SERVICE_NAME" "/etc/systemd/system/$SERVICE_NAME"
+echo "🔧 Configuring services for user $CURRENT_USER..."
 
-# 5. Reload systemd and start service
-echo "⚙️ Reloading systemd and starting service..."
+# Update Tracking Server Service
+sed -i "s|User=ubuntu|User=$CURRENT_USER|g" "$SERVER_SERVICE"
+sed -i "s|Group=ubuntu|Group=$CURRENT_USER|g" "$SERVER_SERVICE"
+sed -i "s|WorkingDirectory=/home/ubuntu/mlflow-tutorial|WorkingDirectory=$PROJECT_DIR|g" "$SERVER_SERVICE"
+sed -i "s|ExecStart=/usr/local/bin/uv|ExecStart=$UV_PATH|g" "$SERVER_SERVICE"
+
+# Update Static Docs Service
+sed -i "s|User=ubuntu|User=$CURRENT_USER|g" "$DOCS_SERVICE"
+sed -i "s|Group=ubuntu|Group=$CURRENT_USER|g" "$DOCS_SERVICE"
+sed -i "s|WorkingDirectory=/home/ubuntu/mlflow-tutorial/_build/html|WorkingDirectory=$PROJECT_DIR/_build/html|g" "$DOCS_SERVICE"
+
+# 5. Create Symlinks
+echo "🔗 Symlinking services..."
+sudo ln -sf "$PROJECT_DIR/$SERVER_SERVICE" "/etc/systemd/system/$SERVER_SERVICE"
+sudo ln -sf "$PROJECT_DIR/$DOCS_SERVICE" "/etc/systemd/system/$DOCS_SERVICE"
+
+# 6. Reload systemd and start
+echo "⚙️ Starting services..."
 sudo systemctl daemon-reload
-sudo systemctl enable $SERVICE_NAME
-sudo systemctl restart $SERVICE_NAME
+sudo systemctl enable $SERVER_SERVICE $DOCS_SERVICE
+sudo systemctl restart $SERVER_SERVICE $DOCS_SERVICE
 
 echo "✅ Deployment complete!"
-echo "📍 MLflow is running at: http://$(hostname -I | awk '{print $1}'):5000"
-echo "📖 You can check logs with: journalctl -u $SERVICE_NAME -f"
+echo "📍 MLflow Tracking: http://$(hostname -I | awk '{print $1}'):5000"
+echo "📖 Static Tutorial: http://$(hostname -I | awk '{print $1}'):8080"
