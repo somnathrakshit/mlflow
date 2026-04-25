@@ -11,6 +11,8 @@ project:
     - Thumbs.db
     - .DS_Store
   github: user/mlflow-tutorial
+  launch_buttons:
+    colab_url: "https://colab.research.google.com"
   toc:
     - file: intro.md
     - title: Getting Started
