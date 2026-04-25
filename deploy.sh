@@ -10,6 +10,11 @@ DOCS_SERVICE="mlflow-docs.service"
 
 echo "🚀 Starting deployment..."
 
+# 0. Cleanup: Stop and disable the old tracking server if it exists
+echo "🧹 Cleaning up old tracking server service..."
+sudo systemctl stop mlflow-server.service || true
+sudo systemctl disable mlflow-server.service || true
+
 # 1. Update system and install dependencies
 echo "📦 Installing system dependencies..."
 sudo apt-get update
