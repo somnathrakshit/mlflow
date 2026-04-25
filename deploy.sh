@@ -33,6 +33,7 @@ fi
 # 3. Build Static Documentation
 echo "🏗️ Building HTML from Jupyter Book..."
 uv sync
+# Use npx to run the myst Node.js tool for a static build
 uv run jupyter-book build --html
 
 # 4. Configure Services dynamically
@@ -55,4 +56,4 @@ sudo systemctl enable $DOCS_SERVICE
 sudo systemctl restart $DOCS_SERVICE
 
 echo "✅ Deployment complete!"
-echo "📖 Static Tutorial: http://$(hostname -I | awk '{print $1}'):8080"
+echo "📖 Static Tutorial: http://$(hostname -I | awk '{print $1}'):5001"
