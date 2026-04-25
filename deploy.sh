@@ -28,7 +28,7 @@ fi
 # 3. Build Static Documentation
 echo "🏗️ Building HTML from Jupyter Book..."
 uv sync
-uv run jupyter-book build .
+uv run jupyter-book build --html
 
 # 4. Configure Services dynamically
 CURRENT_USER=$(whoami)
