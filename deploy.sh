@@ -14,7 +14,23 @@ echo "🚀 Starting deployment..."
 echo "📦 Installing system dependencies..."
 sudo apt-get update
 sudo apt-get install -y curl git python3-pip
-# 2. Configure Services dynamically
+
+# 2. Install uv (if not already installed)
+if ! command -v uv &> /dev/null; then
+    echo "✨ Installing uv..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    export PATH="$HOME/.local/bin:$PATH"
+    if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+    fi
+fi
+
+# 3. Build Static Documentation
+echo "🏗️ Building HTML from Jupyter Book..."
+uv sync
+uv run jupyter-book build .
+
+# 4. Configure Services dynamically
 CURRENT_USER=$(whoami)
 
 echo "🔧 Configuring services for user $CURRENT_USER..."
