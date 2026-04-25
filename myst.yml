@@ -1,0 +1,36 @@
+version: 1
+project:
+  title: MLflow for Beginners
+  authors:
+    - name: MLflow Enthusiast
+  exclude:
+    - .venv
+    - .git
+    - .github
+    - _build
+    - Thumbs.db
+    - .DS_Store
+  github: user/mlflow-tutorial
+  toc:
+    - file: intro.md
+    - title: Getting Started
+      children:
+        - file: lessons/setup.ipynb
+    - title: Phase 1 - Foundations
+      children:
+        - file: lessons/tracking.ipynb
+        - file: lessons/ui_navigation.ipynb
+    - title: Phase 2 - Intermediate
+      children:
+        - file: lessons/models.ipynb
+        - file: lessons/registry.ipynb
+    - title: Phase 3 - Advanced
+      children:
+        - file: lessons/serving.ipynb
+        - file: lessons/llmops.ipynb
+site:
+  options:
+    logo: logo.png
+    analytics_google: ''
+    folders: true
+  template: book-theme
