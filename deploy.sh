@@ -43,7 +43,8 @@ echo "🔧 Configuring services for user $CURRENT_USER..."
 # Update Static Docs Service
 sed -i "s|User=ubuntu|User=$CURRENT_USER|g" "$DOCS_SERVICE"
 sed -i "s|Group=ubuntu|Group=$CURRENT_USER|g" "$DOCS_SERVICE"
-sed -i "s|WorkingDirectory=/home/ubuntu/mlflow-tutorial/_build/html|WorkingDirectory=$PROJECT_DIR/_build/html|g" "$DOCS_SERVICE"
+sed -i "s|WorkingDirectory=/home/ubuntu/mlflow/_build/html|WorkingDirectory=$PROJECT_DIR/_build/html|g" "$DOCS_SERVICE"
+sed -i "s|/home/ubuntu/.local/bin/uv|$HOME/.local/bin/uv|g" "$DOCS_SERVICE"
 
 # 5. Create Symlinks
 echo "🔗 Symlinking services..."

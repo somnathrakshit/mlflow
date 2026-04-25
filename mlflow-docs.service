@@ -7,9 +7,9 @@ After=network.target
 User=ubuntu
 Group=ubuntu
 # This directory should contain the built HTML from your local machine
-WorkingDirectory=/home/ubuntu/mlflow-tutorial/_build/html
+WorkingDirectory=/home/ubuntu/mlflow/_build/html
 # Simple Python static server to minimize CPU/RAM usage
-ExecStart=/usr/bin/python3 -m http.server 5001
+ExecStart=/home/ubuntu/.local/bin/uv run python -m http.server 5001
 Restart=always
 RestartSec=5
 
