@@ -13,7 +13,7 @@ echo "🚀 Starting deployment..."
 # 1. Update system and install dependencies
 echo "📦 Installing system dependencies..."
 sudo apt-get update
-sudo apt-get install -y curl git python3-pip
+sudo apt-get install -y curl git nano byobu htop zip unzip python3-pip
 
 # 2. Install uv (if not already installed)
 if ! command -v uv &> /dev/null; then
