@@ -4,27 +4,30 @@ This repository contains a comprehensive Jupyter Book tutorial for MLflow, cover
 
 ## 🚀 Features
 - **14 Detailed Lessons**: Progressive curriculum from Foundations to Mastery.
-- **Modern Tech Stack**: Managed with `uv` for speed and reproducibility.
+- **Modern Tech Stack**: Managed with `pip` and `requirements.txt` for maximum compatibility.
 - **Interactive**: Integrated Google Colab buttons for all notebooks.
 - **Production Ready**: Includes `systemd` configuration for Linux deployment.
 
 ## 🛠️ Local Development
 
-1. **Install uv**:
+1. **Clone the repository**:
    ```bash
-   curl -LsSf https://astral.sh/uv/install.sh | sh
+   git clone <repo-url>
+   cd mlflow
    ```
 2. **Setup environment**:
    ```bash
-   uv sync
+   python -m venv .venv
+   source .venv/bin/activate  # Or .venv\Scripts\activate on Windows
+   pip install -r requirements.txt
    ```
 3. **Build the book**:
    ```bash
-   uv run jupyter-book build --html
+   jupyter-book build --html
    ```
 4. **Start local preview**:
    ```bash
-   uv run jupyter-book start
+   # Open _build/html/index.html in your browser
    ```
 
 ## 🌐 Linux Deployment (Low Resource)
@@ -33,7 +36,7 @@ This setup is optimized for servers with limited RAM/CPU. We build the site loca
 
 1. **Build locally (on your PC)**:
    ```bash
-   uv run jupyter-book build --html
+   jupyter-book build --html
    ```
 
 2. **Push to Server**:
