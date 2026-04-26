@@ -10,7 +10,7 @@ MLflow is an open-source platform for managing the end-to-end machine learning l
 4. **Model Registry**: Store, annotate, discover, and manage models in a central repository.
 
 ## What will you learn?
-- **Setup**: Professional environment management with `pip` and `requirements.txt`.
+- **Setup**: Professional environment management with `uv`.
 - **Foundations**: Autologging, nested runs, and managing complex artifacts.
 - **Intermediate**: Model signatures, custom PyFunc wrappers, and production-ready model versions.
 - **Advanced**: Docker-based serving and full LLMOps observability with Tracing.
